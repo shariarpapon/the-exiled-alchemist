@@ -11,6 +11,10 @@ namespace Main.WorldManagement
     {
         public GameObject chunkGameObject;
 
+        public void SetVisible(bool visible) 
+        {
+            chunkGameObject.SetActive(visible);
+        }
     }
 
 }

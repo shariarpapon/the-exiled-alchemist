@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Main.DebuggingUtility
 {
+    /// <summary>
+    /// This class contains various debugging methods.
+    /// </summary>
     public class DebugUtils
     {
-        public static void LogPositive(object msg) => Print(msg, "#00FF6F");
-        public static void LogNegative(object msg) => Print(msg, "#FC5C5C");
-        public static void LogCheck(object msg) => Print(msg, "#FFD96E");
-        public static void LogConfirmation(object msg) => Print(msg, "#A0B9FF");
-        public static void LogFailed(object msg) => Print(msg, "#F7A278");
+        public static void LogPositive(object msg) => Log(msg, "#00FF6F");
+        public static void LogNegative(object msg) => Log(msg, "#FC5C5C");
+        public static void LogCheck(object msg) => Log(msg, "#FFD96E");
+        public static void LogConfirmation(object msg) => Log(msg, "#A0B9FF");
+        public static void LogFailed(object msg) => Log(msg, "#F7A278");
 
-        public static void Print(object msg, string hex) => 
+        public static void LimitedLog(object msg, int limit, ref int counter) 
+        {
+            if (counter >= limit) return;
+
+            counter++;
+            LogCheck(msg);
+        }
+
+        public static void Log(object msg, string hex) => 
             Debug.Log($"<color={hex}>{msg}</color>");
     }
 }

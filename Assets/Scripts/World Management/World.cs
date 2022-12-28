@@ -1,7 +1,6 @@
-using System.Collections;
+using Main.DebuggingUtility;
 using System.Collections.Generic;
 using UnityEngine;
-using Main.DebuggingUtility;
 
 namespace Main.WorldManagement
 {
@@ -10,21 +9,38 @@ namespace Main.WorldManagement
     /// </summary>
     public class World
     {
-        public Chunk[,] chunks;
-        public WorldSettings worldSettings;
+        public WorldSettings Settings { get; private set; }
+        public Dictionary<Vector2, Chunk> Chunks { get; private set; }
+        public float MinHeight { get; private set; }
+        public float MaxHeight { get; private set; }
+        public int ChunksPerAxis { get; private set; }
 
-        public float minHeight;
-        public float maxHeight;
-
-        public World(WorldSettings worldSettings) 
+        public World(WorldSettings settings) 
         {
-            this.worldSettings = worldSettings;
+            Settings = settings;
+            MinHeight = float.MaxValue;
+            MaxHeight = float.MinValue;
+
+            ChunksPerAxis = settings.worldSize / settings.chunkSize;
+
             GenerateWorld();
         }
 
+        //World generation entry point
         private void GenerateWorld() 
         {
             DebugUtils.LogConfirmation("World generated!");
+        }
+
+        /// <summary>
+        /// Returns coordinates of the chunk the given worldPosition is occupying.
+        /// </summary>
+        public Vector2 GetChunkCoordinate(Vector3 worldPos)
+        {
+            Vector2 chunkCoord = new Vector2(Mathf.RoundToInt(worldPos.x / Settings.chunkSize), Mathf.RoundToInt(worldPos.z / Settings.chunkSize));
+            chunkCoord.x = Mathf.Clamp(chunkCoord.x, 0, ChunksPerAxis - 1);
+            chunkCoord.y = Mathf.Clamp(chunkCoord.y, 0, ChunksPerAxis - 1);
+            return chunkCoord;
         }
 
         /// <summary>
@@ -32,8 +48,8 @@ namespace Main.WorldManagement
         /// </summary>
         public void CompareAndEvaluateHeights(float min, float max)
         {
-            if (min < minHeight) minHeight = min;
-            if (max > maxHeight) maxHeight = max;
+            if (min < MinHeight) MinHeight = min;
+            if (max > MaxHeight) MaxHeight = max;
         }
     }
 

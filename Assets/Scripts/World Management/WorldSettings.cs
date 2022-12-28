@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Main.WorldManagement
@@ -11,13 +9,23 @@ namespace Main.WorldManagement
     public class WorldSettings : ScriptableObject
     {
         [Header("Global Settings")]
+        public bool useRandomSeed;
         public int seed;
         public int worldSize;
         public Vector2 worldOffset;
 
         [Header("Chunk Settings")]
+
+        [Tooltip("Must be a multiple of 16.")]
         public int chunkSize;
-        public int maxChunkVisibleDistance = 100;
         public NoiseSettings chunkNoiseSettings;
+
+        public int VertsPerChunkSegment  
+        { 
+            get
+            { 
+                return chunkSize + 1; 
+            } 
+        }
     }
 }
