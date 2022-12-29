@@ -22,63 +22,65 @@ namespace Main.WorldManagement
         [SerializeField]
         private float maxViewDistance = 100;
 
-
         private World world;
         private Dictionary<Vector2, Chunk> chunks;
         private ChunkUpdateData[] ChunkDataBuffer;
-        private int maxChunkCount = 0;
+        private int maxVisibleChunkCount = 0;
 
         public void Init(World world) 
         {
             this.world = world;
             this.chunks = world.Chunks;
-            maxChunkCount = maxChunksVisibleRadially * 2 * maxChunksVisibleRadially * 2;
+            maxVisibleChunkCount = maxChunksVisibleRadially * 2 * maxChunksVisibleRadially * 2;
 
             visibilityComputer.SetFloat("maxChunkViewDist", maxViewDistance);
             visibilityComputer.SetFloat("chunkSize", world.Settings.chunkSize);
             visibilityComputer.SetFloat("chunkExtent", world.Settings.chunkSize / 2.0f);
             visibilityComputer.SetInt("chunksVisibleRadially", maxChunksVisibleRadially);
             visibilityComputer.SetInt("visibleChunkPerAxis", maxChunksVisibleRadially * 2);
-            ChunkDataBuffer = new ChunkUpdateData[maxChunkCount];
+            ChunkDataBuffer = new ChunkUpdateData[maxVisibleChunkCount];
         }
 
         #region Update Methods
         private void Update()
         {
             if (chunkUpdateMethod == ChunkUpdateMethod.Update)
-                UpdateChunks();
+                UpdateChunkVisibility();
         }
 
         private void FixedUpdate()
         {
             if (chunkUpdateMethod == ChunkUpdateMethod.FixedUpdate)
-                UpdateChunks();
+                UpdateChunkVisibility();
         }
 
         private void LateUpdate()
         {
             if (chunkUpdateMethod == ChunkUpdateMethod.LateUpdate)
-                UpdateChunks();
+                UpdateChunkVisibility();
         }
         #endregion
 
-        public void UpdateChunks()
+        /// <summary>
+        /// Updates the visibility of the chunks based on its distance from the viewer.
+        /// </summary>
+        public void UpdateChunkVisibility()
         {
             if (world == null) return;
 
-            ComputeBuffer dataBuffer = new ComputeBuffer(maxChunkCount, BUFFER_BYTESIZE);
+            ComputeBuffer dataBuffer = new ComputeBuffer(maxVisibleChunkCount, BUFFER_BYTESIZE);
             dataBuffer.SetData(ChunkDataBuffer);
 
             visibilityComputer.SetBuffer(0, "dataBuffer", dataBuffer);
             visibilityComputer.SetVector("viewerPosition", viewer.position);
 
-            //Check the previously visible chunks with new viewPoint
+            //Check the previously visible chunks with new viewer position
             visibilityComputer.Dispatch(0, world.Settings.worldSize , world.Settings.worldSize, 1);
             dataBuffer.GetData(ChunkDataBuffer);
             CheckVisibility();
 
-            //Check visible chunks with updated chunk coords
-            Vector2 viewerChunkCoord = world.GetChunkCoordinate(viewer.position);
+            //Check visible chunks with updated viewer position
+            Vector2 viewerChunkCoord = world.GetChunkLocalPosition(viewer.position);
             visibilityComputer.SetInt("viewerChunkCoordX", (int)viewerChunkCoord.x);
             visibilityComputer.SetInt("viewerChunkCoordY", (int)viewerChunkCoord.y);
 

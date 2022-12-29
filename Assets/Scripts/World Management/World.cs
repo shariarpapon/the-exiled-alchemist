@@ -35,7 +35,7 @@ namespace Main.WorldManagement
         /// <summary>
         /// Returns coordinates of the chunk the given worldPosition is occupying.
         /// </summary>
-        public Vector2 GetChunkCoordinate(Vector3 worldPos)
+        public Vector2 GetChunkLocalPosition(Vector3 worldPos)
         {
             Vector2 chunkCoord = new Vector2(Mathf.RoundToInt(worldPos.x / Settings.chunkSize), Mathf.RoundToInt(worldPos.z / Settings.chunkSize));
             chunkCoord.x = Mathf.Clamp(chunkCoord.x, 0, ChunksPerAxis - 1);

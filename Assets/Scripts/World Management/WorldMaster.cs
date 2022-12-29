@@ -7,18 +7,23 @@ namespace Main.WorldManagement
     /// <summary>
     /// This class is used for creating a world and updating its chunks at runtime.
     /// </summary>
+    [RequireComponent(typeof(ChunkVisibilityUpdateHandler))]
     public class WorldMaster : MonoBehaviour
     {
         private const int MINIMUM_CHUNK_SIZE = 16;
 
         public WorldSettings worldSettings;
 
-        [SerializeField]
-        private ChunkVisibilityUpdateHandler chunkUpdateHandler;
         [SerializeField, Space]
         private bool createWorldOnStart = false;
 
+        private ChunkVisibilityUpdateHandler chunkVisibilityUpdateHandler;
         private World world;
+
+        private void Awake()
+        {
+            chunkVisibilityUpdateHandler = GetComponent<ChunkVisibilityUpdateHandler>();
+        }
 
         private void Start()
         {
@@ -40,7 +45,7 @@ namespace Main.WorldManagement
             InitWorldData();
 
             world = new World(worldSettings);
-            chunkUpdateHandler.Init(world);
+            chunkVisibilityUpdateHandler.Init(world);
         }
 
         //Initializes world data and resolves any compatibility issues.
@@ -62,14 +67,14 @@ namespace Main.WorldManagement
 
         private void UpdateChunks()
         {
-            if (chunkUpdateHandler == null) return;
+            if (chunkVisibilityUpdateHandler == null) return;
             //Update chunks
         }
 
         private void ClearWorld()
         {
             world = null;
-            chunkUpdateHandler = null;
+            chunkVisibilityUpdateHandler = null;
 
             foreach (Transform t in transform)
             {
