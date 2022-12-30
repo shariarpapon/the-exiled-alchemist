@@ -1,3 +1,4 @@
+using System.Drawing;
 using UnityEngine;
 
 namespace Main.WorldManagement
@@ -12,20 +13,13 @@ namespace Main.WorldManagement
         public bool useRandomSeed;
         public int seed;
         public int worldSize;
-        public Vector2 worldOffset;
+        public Vector3 worldOffset;
 
         [Header("Chunk Settings")]
 
         [Tooltip("Must be a multiple of 16.")]
         public int chunkSize;
+        public Material chunkMaterial;
         public NoiseSettings chunkNoiseSettings;
-
-        public int VertsPerChunkSegment  
-        { 
-            get
-            { 
-                return chunkSize + 1; 
-            } 
-        }
     }
 }

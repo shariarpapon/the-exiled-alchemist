@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0c9c20f3797774baebdfd2f7f07dd6, type: 3}
   m_Name: World Settings
   m_EditorClassIdentifier: 
-  seed: 0
-  worldSize: 0
-  chunkSize: 0
+  useRandomSeed: 1
+  seed: 1620035835
+  worldSize: 256
+  worldOffset: {x: 0, y: 0, z: 0}
+  chunkSize: 15
+  chunkMaterial: {fileID: 2100000, guid: 717bf287d1cac5741b5fe30e8efcd91f, type: 2}
   chunkNoiseSettings:
     scale: 40
     amplitude: 1

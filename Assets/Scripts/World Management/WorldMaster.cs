@@ -10,11 +10,8 @@ namespace Main.WorldManagement
     [RequireComponent(typeof(ChunkVisibilityUpdateHandler))]
     public class WorldMaster : MonoBehaviour
     {
-        private const int MINIMUM_CHUNK_SIZE = 16;
-
         public WorldSettings worldSettings;
-
-        [SerializeField, Space]
+        [SerializeField]
         private bool createWorldOnStart = false;
 
         private ChunkVisibilityUpdateHandler chunkVisibilityUpdateHandler;
@@ -54,27 +51,19 @@ namespace Main.WorldManagement
             if (worldSettings.chunkNoiseSettings.scale <= 0) worldSettings.chunkNoiseSettings.scale = 0.0001f;
             if (worldSettings.useRandomSeed) worldSettings.seed = DateTimeOffset.Now.ToUnixTimeMilliseconds().GetHashCode();
 
-            //Minimum chunk size must be a multiple of 16 due to computer shader compatibility.
-            worldSettings.chunkSize -= worldSettings.chunkSize % MINIMUM_CHUNK_SIZE;
-            if (worldSettings.chunkSize < MINIMUM_CHUNK_SIZE)
-                worldSettings.chunkSize = MINIMUM_CHUNK_SIZE;
+            //Chunk size must be greater than zero.
+            if (worldSettings.chunkSize <= 0)
+                worldSettings.chunkSize = 1;
 
+            //World size must be a multiple of the chunk size.
+            worldSettings.worldSize -= worldSettings.worldSize % worldSettings.chunkSize;
             if (worldSettings.worldSize < worldSettings.chunkSize)
                 worldSettings.worldSize = worldSettings.chunkSize;
-
-            worldSettings.worldSize -= worldSettings.worldSize % worldSettings.chunkSize;
-        }
-
-        private void UpdateChunks()
-        {
-            if (chunkVisibilityUpdateHandler == null) return;
-            //Update chunks
         }
 
         private void ClearWorld()
         {
             world = null;
-            chunkVisibilityUpdateHandler = null;
 
             foreach (Transform t in transform)
             {
