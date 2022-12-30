@@ -640,7 +640,7 @@ MonoBehaviour:
   viewer: {fileID: 1423562244}
   visibilityComputer: {fileID: 7200000, guid: 50c72f36d5122f24f8937e78d32ff40a, type: 3}
   updateMethod: 0
-  visibleChunksPerAxis: 32
+  visibleChunksPerAxis: 16
   maxViewDistance: 100
 --- !u!1001 &872044127
 PrefabInstance:

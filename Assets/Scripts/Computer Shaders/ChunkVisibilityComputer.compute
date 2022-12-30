@@ -1,4 +1,4 @@
-#pragma kernel Compute
+#pragma kernel Kernel_16x16x1
 
 struct ChunkUpdateData
 {
@@ -15,8 +15,10 @@ float chunkExtent;
 
 float3 viewerPosition;
 
-int viewerChunkCoordX;
-int viewerChunkCoordY;
+//int viewerChunkCoordX;
+//int viewerChunkCoordY;
+
+int2 viewerChunkCoords;
 
 int chunksVisibleRadially;
 int visibleChunksPerAxis;
@@ -28,10 +30,10 @@ float BoundDistToViewer(float3 min, float3 max, float3 viewer)
 };
 
 [numthreads(16,16,1)]
-void Compute(uint3 id : SV_DispatchThreadID)
+void Kernel_16x16x1(uint3 id : SV_DispatchThreadID)
 {
-    int ccx = viewerChunkCoordX + (id.x - chunksVisibleRadially);
-    int ccy = viewerChunkCoordY + (id.y - chunksVisibleRadially);
+    int ccx = viewerChunkCoords.x + (id.x - chunksVisibleRadially);
+    int ccy = viewerChunkCoords.y + (id.y - chunksVisibleRadially);
 
     int index = id.y * visibleChunksPerAxis + id.x;
 

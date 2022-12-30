@@ -10,7 +10,7 @@ namespace Main.WorldManagement
     [RequireComponent(typeof(ChunkVisibilityUpdateHandler))]
     public class WorldMaster : MonoBehaviour
     {
-        public WorldSettings worldSettings;
+        public WorldSettings worldSettings; 
         [SerializeField]
         private bool createWorldOnStart = false;
 
@@ -48,17 +48,12 @@ namespace Main.WorldManagement
         //Initializes world data and resolves any compatibility issues.
         private void InitWorldData()
         {
-            if (worldSettings.chunkNoiseSettings.scale <= 0) worldSettings.chunkNoiseSettings.scale = 0.0001f;
+            if (worldSettings.heightNosieSettings.scale <= 0) worldSettings.heightNosieSettings.scale = 0.0001f;
             if (worldSettings.useRandomSeed) worldSettings.seed = DateTimeOffset.Now.ToUnixTimeMilliseconds().GetHashCode();
 
             //Chunk size must be greater than zero.
             if (worldSettings.chunkSize <= 0)
                 worldSettings.chunkSize = 1;
-
-            //World size must be a multiple of the chunk size.
-            worldSettings.worldSize -= worldSettings.worldSize % worldSettings.chunkSize;
-            if (worldSettings.worldSize < worldSettings.chunkSize)
-                worldSettings.worldSize = worldSettings.chunkSize;
         }
 
         private void ClearWorld()

@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: World Settings
   m_EditorClassIdentifier: 
   useRandomSeed: 1
-  seed: 1620035835
-  worldSize: 256
+  seed: 1672076965
+  worldSizeInChunks: 10
   worldOffset: {x: 0, y: 0, z: 0}
-  chunkSize: 15
+  chunkSize: 16
   chunkMaterial: {fileID: 2100000, guid: 717bf287d1cac5741b5fe30e8efcd91f, type: 2}
-  chunkNoiseSettings:
+  heightNosieSettings:
     scale: 40
-    amplitude: 1
+    amplitude: 5
     frequency: 1
     lacunarity: 1
     persistence: 1

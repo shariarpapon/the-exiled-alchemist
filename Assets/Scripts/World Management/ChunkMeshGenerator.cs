@@ -4,7 +4,7 @@ namespace Main.WorldManagement
 {
     internal static class ChunkMeshGenerator
     {
-        internal static Mesh CreateChunkMesh(int chunkSize)
+        internal static Mesh GenerateChunkMesh(int chunkSize, float[,] heightMap)
         {
             int vertCount = chunkSize + 1;
             Vector3[] verticies = new Vector3[vertCount * vertCount];
@@ -13,7 +13,7 @@ namespace Main.WorldManagement
                 for (int y = 0; y < vertCount; y++)
                 {
                     int index = x * vertCount + y;
-                    float height = 0;
+                    float height = heightMap[x, y];
                     verticies[index] = new Vector3(x, height, y);
                 }
 
@@ -46,6 +46,6 @@ namespace Main.WorldManagement
             }
             return tris;
         }
-    }
 
+    }
 }

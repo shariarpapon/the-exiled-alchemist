@@ -1,6 +1,3 @@
-using Main.DebuggingUtility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Main.WorldManagement
@@ -10,30 +7,26 @@ namespace Main.WorldManagement
     /// </summary>
     public class Chunk
     {
-        public GameObject chunkGameObject;
+        public readonly GameObject chunkGameObject;
+        public readonly ChunkData data;
 
-        private Vector2 localPosition;
-        private Vector2 globalPosition;
-
-        //TODO: Instead of taking the data directly, first generate ChunkData then pass that in.
-        public Chunk(Mesh mesh, Material chunkMaterial, Vector2 localPosition, Vector3 globalPosition) 
+        public Chunk(ChunkData data) 
         {
-            this.localPosition = localPosition;
-            this.globalPosition = globalPosition;
+            this.data = data;
 
-            chunkGameObject = new GameObject($"Chunk {localPosition}");
+            chunkGameObject = new GameObject($"Chunk {data.relativePosition}");
 
             MeshFilter filter = chunkGameObject.AddComponent<MeshFilter>();
-            filter.sharedMesh = mesh;
+            filter.sharedMesh = data.chunkMesh;
 
-            chunkGameObject.AddComponent<MeshRenderer>().material = chunkMaterial;
+            chunkGameObject.AddComponent<MeshRenderer>().material = data.chunkMaterial;
 
             MeshCollider collider = chunkGameObject.AddComponent<MeshCollider>();
-            collider.sharedMesh = mesh;
+            collider.sharedMesh = data.chunkMesh;
             collider.isTrigger = false;
             collider.convex = false;
 
-            chunkGameObject.transform.position = globalPosition;
+            chunkGameObject.transform.position = data.globalPosition;
 
             SetVisible(false);
         }

@@ -1,4 +1,3 @@
-using Main.DebuggingUtility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,10 +77,11 @@ namespace Main.WorldManagement
         {
             if (world == null) return;
 
+            int kernelIndex = visibilityComputer.FindKernel("Kernel_16x16x1");
             ComputeBuffer dataBuffer = new ComputeBuffer(maxVisibleChunks, BUFFER_BYTESIZE);
             dataBuffer.SetData(ChunkDataBuffer);
 
-            visibilityComputer.SetBuffer(0, "dataBuffer", dataBuffer);
+            visibilityComputer.SetBuffer(kernelIndex, "dataBuffer", dataBuffer);
             visibilityComputer.SetVector("viewerPosition", viewer.position);
 
             //Check the previously visible chunks with new viewer position
@@ -90,14 +90,12 @@ namespace Main.WorldManagement
             CheckVisibility();
 
             //Check visible chunks with updated viewer position
-            Vector2 viewerChunkCoord = world.GlobalToLocalChunkPosition(viewer.position);
-            visibilityComputer.SetInt("viewerChunkCoordX", (int)viewerChunkCoord.x);
-            visibilityComputer.SetInt("viewerChunkCoordY", (int)viewerChunkCoord.y);
+            Vector2 viewerChunkCoords = world.GlobalToRelativeChunkPosition(viewer.position);
+            visibilityComputer.SetInts("viewerChunkCoords", (int)viewerChunkCoords.x, (int)viewerChunkCoords.y);
 
-            visibilityComputer.Dispatch(0, chunkUpdateThreadGroups, chunkUpdateThreadGroups, 1);
+            visibilityComputer.Dispatch(kernelIndex, chunkUpdateThreadGroups, chunkUpdateThreadGroups, 1);
             dataBuffer.GetData(ChunkDataBuffer);
             dataBuffer.Dispose();
-
             CheckVisibility();
         }
 

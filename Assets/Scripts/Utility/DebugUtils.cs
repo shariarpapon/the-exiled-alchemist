@@ -5,7 +5,7 @@ namespace Main.DebuggingUtility
     /// <summary>
     /// This class contains various debugging methods.
     /// </summary>
-    public class DebugUtils
+    public static class DebugUtils
     {
         public static void LogPositive(object msg) => Log(msg, "#00FF6F");
         public static void LogNegative(object msg) => Log(msg, "#FC5C5C");

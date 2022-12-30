@@ -1,8 +1,7 @@
-using System.Drawing;
 using UnityEngine;
 
 namespace Main.WorldManagement
-{
+{        
     /// <summary>
     /// This scriptable object contains the settings for world generation.
     /// </summary>
@@ -12,14 +11,16 @@ namespace Main.WorldManagement
         [Header("Global Settings")]
         public bool useRandomSeed;
         public int seed;
-        public int worldSize;
+
+        [Tooltip("The number of chunks per axis (X, Z) of the world")]
+        public int worldSizeInChunks;
+        public int WorldSize { get { return worldSizeInChunks * chunkSize; } }
+
         public Vector3 worldOffset;
-
+        
         [Header("Chunk Settings")]
-
-        [Tooltip("Must be a multiple of 16.")]
         public int chunkSize;
         public Material chunkMaterial;
-        public NoiseSettings chunkNoiseSettings;
+        public NoiseSettings heightNosieSettings;
     }
 }
