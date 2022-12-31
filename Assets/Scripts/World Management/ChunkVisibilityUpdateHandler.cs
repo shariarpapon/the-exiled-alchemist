@@ -23,7 +23,7 @@ namespace Main.WorldManagement
 
         private World world;
         private Dictionary<Vector2, Chunk> chunks;
-        private ChunkUpdateData[] ChunkDataBuffer;
+        private ChunkUpdateData[] dataBuffer;
         private int maxVisibleChunks;
         private int chunksVisibleRadially;
 
@@ -47,7 +47,7 @@ namespace Main.WorldManagement
             visibilityComputer.SetFloat("chunkExtent", world.Settings.chunkSize / 2.0f);
             visibilityComputer.SetInt("chunksVisibleRadially", chunksVisibleRadially);
             visibilityComputer.SetInt("visibleChunksPerAxis", visibleChunksPerAxis);
-            ChunkDataBuffer = new ChunkUpdateData[maxVisibleChunks];
+            dataBuffer = new ChunkUpdateData[maxVisibleChunks];
         }
 
         #region Update Methods
@@ -75,18 +75,18 @@ namespace Main.WorldManagement
         /// </summary>
         public void UpdateChunkVisibility()
         {
-            if (world == null) return;
+            if (world == null || !world.Settings.updateChunkVisibility) return;
 
             int kernelIndex = visibilityComputer.FindKernel("Kernel_16x16x1");
-            ComputeBuffer dataBuffer = new ComputeBuffer(maxVisibleChunks, BUFFER_BYTESIZE);
-            dataBuffer.SetData(ChunkDataBuffer);
+            ComputeBuffer computeDataBuffer = new ComputeBuffer(maxVisibleChunks, BUFFER_BYTESIZE);
+            computeDataBuffer.SetData(dataBuffer);
 
-            visibilityComputer.SetBuffer(kernelIndex, "dataBuffer", dataBuffer);
+            visibilityComputer.SetBuffer(kernelIndex, "dataBuffer", computeDataBuffer);
             visibilityComputer.SetVector("viewerPosition", viewer.position);
 
             //Check the previously visible chunks with new viewer position
             visibilityComputer.Dispatch(0, chunkUpdateThreadGroups, chunkUpdateThreadGroups, 1);
-            dataBuffer.GetData(ChunkDataBuffer);
+            computeDataBuffer.GetData(dataBuffer);
             CheckVisibility();
 
             //Check visible chunks with updated viewer position
@@ -94,14 +94,14 @@ namespace Main.WorldManagement
             visibilityComputer.SetInts("viewerChunkCoords", (int)viewerChunkCoords.x, (int)viewerChunkCoords.y);
 
             visibilityComputer.Dispatch(kernelIndex, chunkUpdateThreadGroups, chunkUpdateThreadGroups, 1);
-            dataBuffer.GetData(ChunkDataBuffer);
-            dataBuffer.Dispose();
+            computeDataBuffer.GetData(dataBuffer);
+            computeDataBuffer.Dispose();
             CheckVisibility();
         }
 
         private void CheckVisibility()
         {
-            foreach (ChunkUpdateData data in ChunkDataBuffer)
+            foreach (ChunkUpdateData data in dataBuffer)
             {
                 if (chunks.ContainsKey(data.coord))
                 {
@@ -124,14 +124,14 @@ namespace Main.WorldManagement
         }
 
         [Serializable]
-        public enum ChunkUpdateMethod
+        private enum ChunkUpdateMethod
         {
             Update,
             FixedUpdate,
             LateUpdate
         }
 
-        [System.Serializable]
+        [Serializable]
         private struct ChunkUpdateData 
         {
             public Vector2 coord;

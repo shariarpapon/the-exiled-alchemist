@@ -13,6 +13,7 @@ namespace Main.WorldManagement
         public readonly Material chunkMaterial;
         public readonly Vector2 relativePosition;
         public readonly Vector3 globalPosition;
+        public readonly Vector2 offset;
 
         public ChunkData(int chunkSize, Material chunkMaterial, NoiseSettings heightNoiseSettings, Vector2 offset, Vector2 relativePos, Vector3 globalPos) 
         {
@@ -21,6 +22,7 @@ namespace Main.WorldManagement
             this.heightNoiseSettings = heightNoiseSettings;
             this.relativePosition = relativePos;
             this.globalPosition = globalPos;
+            this.offset = offset;
             chunkVertSize = chunkSize + 1;
 
             //Must pass in chunkVertSize (=chunkSize + 1) since the number of verticies is 1 greater than the actual length.

@@ -14,10 +14,6 @@ float chunkSize;
 float chunkExtent;
 
 float3 viewerPosition;
-
-//int viewerChunkCoordX;
-//int viewerChunkCoordY;
-
 int2 viewerChunkCoords;
 
 int chunksVisibleRadially;

@@ -10,7 +10,7 @@ namespace Main.WorldManagement
         public readonly GameObject chunkGameObject;
         public readonly ChunkData data;
 
-        public Chunk(ChunkData data) 
+        public Chunk(ChunkData data, bool defaultVisibility)
         {
             this.data = data;
 
@@ -28,7 +28,7 @@ namespace Main.WorldManagement
 
             chunkGameObject.transform.position = data.globalPosition;
 
-            SetVisible(false);
+            SetVisible(defaultVisibility);
         }
 
         public void SetVisible(bool visible) 
