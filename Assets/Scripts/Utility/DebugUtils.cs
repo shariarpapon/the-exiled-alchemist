@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Main.DebuggingUtility
+namespace Everime.DebuggingUtility
 {
     /// <summary>
     /// This class contains various debugging methods.

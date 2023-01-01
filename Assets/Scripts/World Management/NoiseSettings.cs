@@ -1,4 +1,4 @@
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     /// <summary>
     /// This class contains settings for nosie map generation.

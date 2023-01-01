@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Net;
 
-namespace Main.WorldManagement.CustomEditors
+namespace Everime.WorldManagement.CustomEditors
 {
     [CustomEditor(typeof(WorldMaster))]
     public class WorldMasterEditor : Editor

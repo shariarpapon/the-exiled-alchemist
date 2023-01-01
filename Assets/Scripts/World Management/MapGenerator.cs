@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     /// <summary>
     /// This class contains methods for noise map generation.

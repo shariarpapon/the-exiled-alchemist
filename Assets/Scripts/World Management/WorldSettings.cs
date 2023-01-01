@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {        
     /// <summary>
     /// This scriptable object contains the settings for world generation.

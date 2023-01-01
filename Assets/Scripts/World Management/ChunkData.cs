@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     public class ChunkData
     {

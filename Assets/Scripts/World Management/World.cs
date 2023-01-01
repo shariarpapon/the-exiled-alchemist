@@ -1,8 +1,8 @@
-using Main.DebuggingUtility;
+using Everime.DebuggingUtility;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     /// <summary>
     /// The world class generates the world map and holds all data of the particular world.

@@ -1,8 +1,8 @@
-using Main.DebuggingUtility;
+using Everime.DebuggingUtility;
 using System;
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     /// <summary>
     /// This class is used for creating a world and updating its chunks at runtime.

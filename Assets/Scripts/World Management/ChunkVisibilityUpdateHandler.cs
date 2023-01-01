@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     /// <summary>
     /// This class handles chunk updates.

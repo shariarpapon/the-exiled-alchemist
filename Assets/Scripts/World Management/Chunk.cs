@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Main.WorldManagement
+namespace Everime.WorldManagement
 {
     /// <summary>
     /// This class contains all the data of a chunk.

@@ -1,9 +1,7 @@
 {
-    "name": "_DEF_WorldManagement",
+    "name": "Everime.Utility",
     "rootNamespace": "",
-    "references": [
-        "GUID:59a16361dc294bd4d97cd17bfa965758"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
