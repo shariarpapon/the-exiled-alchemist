@@ -24,7 +24,7 @@ namespace Main.WorldManagement
         [Header("Chunk Settings")]
         public int chunkSize;
         public Material chunkMaterial;
-        public NoiseSettings heightNosieSettings;
+        public NoiseSettings heightNoiseSettings;
         public bool updateChunkVisibility = true;
 
         /// <summary>

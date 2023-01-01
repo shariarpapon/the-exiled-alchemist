@@ -47,8 +47,10 @@ namespace Main.WorldManagement
                     Vector2 relativePos = new Vector2(x, y);
                     Vector3 globalPos = RelativeToGlobalChunkPosition(relativePos);
                     Vector2 offset = worldOffset + new Vector2(globalPos.x, globalPos.z);
-                    ChunkData chunkData = new ChunkData(Settings.chunkSize, Settings.chunkMaterial, Settings.heightNosieSettings, offset, relativePos, globalPos);
+                    float[,] heightMap = MapGenerator.GenerateHeightMap(Settings.chunkSize + 1, offset, Settings.heightNoiseSettings);
+                    ChunkData chunkData = new ChunkData(heightMap, Settings.chunkMaterial, relativePos, globalPos);
                     Chunk chunk = new Chunk(chunkData, !Settings.updateChunkVisibility);
+
                     chunk.chunkGameObject.transform.SetParent(worldHolder);
                     Chunks.Add(relativePos, chunk);
                 }

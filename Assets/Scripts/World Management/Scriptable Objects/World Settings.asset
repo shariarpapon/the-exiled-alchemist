@@ -18,9 +18,9 @@ MonoBehaviour:
   worldOffset: {x: 0, y: 0, z: 0}
   chunkSize: 16
   chunkMaterial: {fileID: 2100000, guid: 717bf287d1cac5741b5fe30e8efcd91f, type: 2}
-  heightNosieSettings:
+  heightNoiseSettings:
     scale: 40
-    amplitude: 5
+    amplitude: 1
     frequency: 1
     lacunarity: 1
     persistence: 1

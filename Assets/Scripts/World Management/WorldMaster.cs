@@ -59,7 +59,7 @@ namespace Main.WorldManagement
         //Initializes world data and resolves any compatibility issues.
         private void InitWorldData()
         {
-            if (worldSettings.heightNosieSettings.scale <= 0) worldSettings.heightNosieSettings.scale = 0.0001f;
+            if (worldSettings.heightNoiseSettings.scale <= 0) worldSettings.heightNoiseSettings.scale = 0.0001f;
             if (worldSettings.useRandomSeed) worldSettings.RandomizeSeed();
 
             //Chunk size must be greater than zero.
