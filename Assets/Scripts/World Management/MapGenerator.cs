@@ -37,12 +37,23 @@ namespace Everime.WorldManagement
             for (int x = 0; x < size; x++)
                 for (int y = 0; y < size; y++)
                 {
-                    Vector2 sample = new Vector2(x + offset.x, y + offset.y) * settings.frequency / settings.scale;
-                    float height = Mathf.PerlinNoise(sample.x, sample.y) * settings.amplitude;
-                    map[x, y] = height;
+                    float ampltiude = 1;
+                    float frequency = 1;
+                    float heightValue = 0;
+                    for (int i = 0; i < settings.octaves; i++)
+                    {
+                        Vector2 sample = (new Vector2(x, y) + offset) / settings.scale * frequency;
+                        float perlinValue = Mathf.PerlinNoise(sample.x, sample.y) * 2 - 1;
+                        heightValue += perlinValue * ampltiude;
 
-                    if (height < minHeight) minHeight = height;
-                    if (height > maxHeight) maxHeight = height;
+                        ampltiude *= settings.persistence;
+                        frequency *= settings.lacunarity;
+                    }
+
+                    map[x, y] = heightValue;
+
+                    if (heightValue < minHeight) minHeight = heightValue;
+                    if (heightValue > maxHeight) maxHeight = heightValue;
                 }
 
             return map;

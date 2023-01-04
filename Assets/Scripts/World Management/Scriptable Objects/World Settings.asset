@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: World Settings
   m_EditorClassIdentifier: 
   useRandomSeed: 0
-  seed: ane3xm0f.ste
-  worldSizeInChunks: 10
+  seed: 27vu4cqp.rh1
+  worldSizeInChunks: 100
+  heightMultiplier: 15
   worldOffset: {x: 0, y: 0, z: 0}
+  worldGenerationMode: 1
   chunkSize: 16
   chunkMaterial: {fileID: 2100000, guid: 717bf287d1cac5741b5fe30e8efcd91f, type: 2}
   heightNoiseSettings:
     scale: 40
     amplitude: 1
     frequency: 1
-    lacunarity: 1
-    persistence: 1
+    octaves: 4
+    lacunarity: 2
+    persistence: 0.3
   updateChunkVisibility: 1

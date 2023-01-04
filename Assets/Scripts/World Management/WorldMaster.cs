@@ -1,5 +1,4 @@
 using Everime.DebuggingUtility;
-using System;
 using UnityEngine;
 
 namespace Everime.WorldManagement
@@ -24,7 +23,6 @@ namespace Everime.WorldManagement
 
         private void Update()
         {
-
 //Only for editor purposes
 #if UNITY_EDITOR 
             if (world != null)
@@ -33,17 +31,19 @@ namespace Everime.WorldManagement
             }
 #endif
 
+            if(worldSettings.worldGenerationMode == WorldGenerationMode.SeperateThread)
+                world?.UpdateThreadChunkQueue();
         }
 
         /// <summary>
         /// This method first clears any existing world and generates a new one with the assigned world settings.
         /// </summary>
-        public World CreateWorld()
+        public void CreateWorld()
         {
             if (worldSettings == null)
             {
                 DebugUtils.LogFailed("World creation failed! Make sure to assign the worldSettings");
-                return null;
+                return;
             }
 
             chunkVisibilityUpdater = GetComponent<ChunkVisibilityUpdateHandler>();
@@ -53,7 +53,6 @@ namespace Everime.WorldManagement
 
             world = new World(worldSettings);
             chunkVisibilityUpdater.Init(world);
-            return world;
         }
 
         //Initializes world data and resolves any compatibility issues.

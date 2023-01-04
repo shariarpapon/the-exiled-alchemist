@@ -14,12 +14,12 @@ namespace Everime.WorldManagement
         [SerializeField]
         private string seed;
         public int Seed { get { return seed.GetHashCode(); } }
-
         [Tooltip("The number of chunks per axis (X, Z) of the world")]
         public int worldSizeInChunks;
         public int WorldSize { get { return worldSizeInChunks * chunkSize; } }
-
+        public float heightMultiplier;
         public Vector3 worldOffset;
+        public WorldGenerationMode worldGenerationMode;
         
         [Header("Chunk Settings")]
         public int chunkSize;
@@ -42,5 +42,12 @@ namespace Everime.WorldManagement
         {
             seed = System.IO.Path.GetRandomFileName();
         }
+    }
+
+    [System.Serializable]
+    public enum WorldGenerationMode 
+    {
+        MainThread,
+        SeperateThread
     }
 }

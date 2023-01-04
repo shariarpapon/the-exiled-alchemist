@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEditor;
 using System.Net;
+using Everime.DebuggingUtility;
 
 namespace Everime.WorldManagement.CustomEditors
 {
     [CustomEditor(typeof(WorldMaster))]
     public class WorldMasterEditor : Editor
     {
-        private static bool WorldeEditorEnabled = false;
-        private static bool worldEditorFoldout = false;
+        private static bool WorldEditorEnabled = true;
+        private static bool WorldSettingsFoldout = false;
         private static bool AutoUpdate = false;
 
         private WorldMaster worldMaster;
@@ -26,8 +27,8 @@ namespace Everime.WorldManagement.CustomEditors
 
             DrawLine(1);
 
-            WorldeEditorEnabled = EditorGUILayout.Toggle("Enable World Editor", WorldeEditorEnabled);
-            if (WorldeEditorEnabled)
+            WorldEditorEnabled = EditorGUILayout.Toggle("Enable World Editor", WorldEditorEnabled);
+            if (WorldEditorEnabled)
             {
                 DrawWorldEditor();
                 EditorGUILayout.Space();
@@ -38,17 +39,23 @@ namespace Everime.WorldManagement.CustomEditors
         {
             EditorGUILayout.Space();
 
-            worldEditorFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(worldEditorFoldout, "World Settings");
+            WorldSettingsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(WorldSettingsFoldout, "World Settings");
     
-            if (worldEditorFoldout)
+            if (WorldSettingsFoldout)
                 worldSettingsEditor.DrawDefaultInspector();
 
             EditorGUILayout.Space();
             AutoUpdate = EditorGUILayout.Toggle("Auto Update", AutoUpdate);
 
             if (AutoUpdate) 
-            { 
-                worldMaster.CreateWorld();
+            {
+                int size = worldMaster.worldSettings.WorldSize;
+                if (size <= 100) worldMaster.CreateWorld();
+                else 
+                {
+                    DebugUtils.LogNegative("Cannot auto update if world size exceeds 100 units!");
+                    AutoUpdate = false; 
+                }
             }
             else
             {

@@ -7,13 +7,18 @@ namespace Everime.WorldManagement
     /// </summary>
     public class Chunk
     {
-        public readonly GameObject chunkGameObject;
         public readonly ChunkData data;
+        public GameObject chunkGameObject;
+        private bool defaultVisibility;
 
         public Chunk(ChunkData data, bool defaultVisibility)
         {
             this.data = data;
+            this.defaultVisibility = defaultVisibility;
+        }
 
+        public void InstantiateChunk()
+        {
             chunkGameObject = new GameObject($"Chunk {data.relativePosition}");
 
             MeshFilter filter = chunkGameObject.AddComponent<MeshFilter>();
@@ -33,7 +38,8 @@ namespace Everime.WorldManagement
 
         public void SetVisible(bool visible) 
         {
-            chunkGameObject.SetActive(visible);
+            if(chunkGameObject != null)
+                chunkGameObject.SetActive(visible);
         }
 
     }

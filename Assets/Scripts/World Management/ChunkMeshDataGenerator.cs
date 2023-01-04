@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Everime.WorldManagement
 {
-    internal static class ChunkMeshGenerator
+    internal static class ChunkMeshDataGenerator
     {
-        internal static Mesh GenerateMesh(float[,] heightMap)
+        internal static Vector3[] GenerateMeshVertices(float[,] heightMap, float heightMultiplier)
         {
             int meshSize = heightMap.GetLength(0);
             Vector3[] chunkVerts = new Vector3[meshSize * meshSize];
@@ -13,20 +13,11 @@ namespace Everime.WorldManagement
                 for (int y = 0; y < meshSize; y++)
                 {
                     int index = x * meshSize + y;
-                    float height = heightMap[x, y];
+                    float height = heightMap[x, y] * heightMultiplier;
                     chunkVerts[index] = new Vector3(x, height, y);
                 }
-
-            Mesh mesh = new()
-            {
-                vertices = chunkVerts,
-                triangles = GetMeshTriangles(meshSize - 1)
-            };
-
-            mesh.RecalculateNormals();
             //mesh.normals = CalculateNormals(mesh);
-            mesh.RecalculateBounds();
-            return mesh;
+            return chunkVerts;
         }
 
         #region Utils
@@ -66,7 +57,7 @@ namespace Everime.WorldManagement
             return Vector3.Cross(sideAB, sideAC).normalized;
         }
 
-        private static int[] GetMeshTriangles(int chunkSize)
+        internal static int[] GenerateMeshTriangles(int chunkSize)
         {
             int[] tris = new int[chunkSize * chunkSize * 6];
             int t = 0, v = 0;
