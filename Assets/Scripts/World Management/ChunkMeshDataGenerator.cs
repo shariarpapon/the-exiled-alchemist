@@ -2,9 +2,12 @@ using UnityEngine;
 
 namespace Everime.WorldManagement
 {
+    /// <summary>
+    /// This class contains methods for chunk mesh generation.
+    /// </summary>
     internal static class ChunkMeshDataGenerator
     {
-        internal static Vector3[] GenerateMeshVertices(float[,] heightMap, float heightMultiplier)
+        internal static Vector3[] GenerateMeshVertices(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, HeightCalculationMethod method)
         {
             int meshSize = heightMap.GetLength(0);
             Vector3[] chunkVerts = new Vector3[meshSize * meshSize];
@@ -13,7 +16,26 @@ namespace Everime.WorldManagement
                 for (int y = 0; y < meshSize; y++)
                 {
                     int index = x * meshSize + y;
-                    float height = heightMap[x, y] * heightMultiplier;
+                    float height = 0;
+                    switch (method) 
+                    {
+                        case HeightCalculationMethod.Square:
+                            height = heightMap[x, y] * heightMap[x, y] * heightMultiplier;
+                            break;
+                        case HeightCalculationMethod.Cube:
+                            height = heightMap[x, y] * heightMap[x, y] * heightMap[x, y] * heightMultiplier;
+                            break;
+                        case HeightCalculationMethod.Curve:
+                            height = heightMap[x, y] * heightMultiplier * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y]));
+                            break;
+                        case HeightCalculationMethod.SquareCurve:
+                            height = heightMap[x, y] * heightMap[x, y] * heightMultiplier * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y]));
+                            break;
+                        case HeightCalculationMethod.CubeCurve:
+                            height = heightMap[x, y] * heightMap[x, y] * heightMap[x, y] * heightMultiplier * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y]));
+                            break;
+                    }
+                    //float height = heightMap[x, y] * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y])) * heightMultiplier;
                     chunkVerts[index] = new Vector3(x, height, y);
                 }
             //mesh.normals = CalculateNormals(mesh);

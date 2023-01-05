@@ -17,8 +17,11 @@ namespace Everime.WorldManagement
         [Tooltip("The number of chunks per axis (X, Z) of the world")]
         public int worldSizeInChunks;
         public int WorldSize { get { return worldSizeInChunks * chunkSize; } }
+
+        public AnimationCurve heightCurve;
         public float heightMultiplier;
         public Vector3 worldOffset;
+        public HeightCalculationMethod heightCalculationMethod;
         public WorldGenerationMode worldGenerationMode;
         
         [Header("Chunk Settings")]
@@ -45,9 +48,19 @@ namespace Everime.WorldManagement
     }
 
     [System.Serializable]
-    public enum WorldGenerationMode 
+    public enum WorldGenerationMode
     {
         MainThread,
         SeperateThread
+    }
+
+    [System.Serializable]
+    public enum HeightCalculationMethod
+    {
+        Square,
+        Cube,
+        Curve,
+        SquareCurve,
+        CubeCurve
     }
 }

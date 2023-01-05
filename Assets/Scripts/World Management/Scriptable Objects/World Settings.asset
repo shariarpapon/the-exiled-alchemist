@@ -14,9 +14,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRandomSeed: 0
   seed: 27vu4cqp.rh1
-  worldSizeInChunks: 100
-  heightMultiplier: 15
+  worldSizeInChunks: 50
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.025157234
+      outSlope: 0.025157234
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.21767111
+    - serializedVersion: 3
+      time: 0.76555794
+      value: 0.2019527
+      inSlope: 0.64870864
+      outSlope: 0.64870864
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.37795582
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 7.7358556
+      outSlope: 7.7358556
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09018185
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  heightMultiplier: 50
   worldOffset: {x: 0, y: 0, z: 0}
+  heightCalculationMethod: 4
   worldGenerationMode: 1
   chunkSize: 16
   chunkMaterial: {fileID: 2100000, guid: 717bf287d1cac5741b5fe30e8efcd91f, type: 2}

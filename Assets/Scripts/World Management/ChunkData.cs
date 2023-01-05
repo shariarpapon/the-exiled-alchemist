@@ -22,9 +22,9 @@ namespace Everime.WorldManagement
             this.globalPosition = globalPosition;
         }
 
-        public void GenerateChunkTerrainMeshData(float heightMultiplier) 
+        public void GenerateChunkTerrainMeshData(float heightMultiplier, AnimationCurve heightCurve, HeightCalculationMethod method) 
         {
-            vertices = ChunkMeshDataGenerator.GenerateMeshVertices(heightMap, heightMultiplier);
+            vertices = ChunkMeshDataGenerator.GenerateMeshVertices(heightMap, heightMultiplier, heightCurve, method);
             triangles = ChunkMeshDataGenerator.GenerateMeshTriangles(heightMap.GetLength(0) - 1);
         }
 

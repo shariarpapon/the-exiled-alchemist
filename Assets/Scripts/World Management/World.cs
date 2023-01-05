@@ -84,7 +84,7 @@ namespace Everime.WorldManagement
                     chunk.data.heightMap = MapGenerator.NormalizeHeightMap(chunk.data.heightMap, minHeight, maxHeight);
 
                     //Post height map generation
-                    chunk.data.GenerateChunkTerrainMeshData(Settings.heightMultiplier);
+                    chunk.data.GenerateChunkTerrainMeshData(Settings.heightMultiplier, Settings.heightCurve, Settings.heightCalculationMethod);
                     chunk.data.CreateMesh();
                     chunk.InstantiateChunk();
                     chunk.chunkGameObject.transform.SetParent(worldHolder);
@@ -115,7 +115,7 @@ namespace Everime.WorldManagement
                 {
                     Chunk chunk = Chunks[new Vector2(x, y)];
                     chunk.data.heightMap = MapGenerator.NormalizeHeightMap(chunk.data.heightMap, minHeight, maxHeight);
-                    chunk.data.GenerateChunkTerrainMeshData(Settings.heightMultiplier);
+                    chunk.data.GenerateChunkTerrainMeshData(Settings.heightMultiplier, Settings.heightCurve, Settings.heightCalculationMethod);
                     lock (chunkQueue)
                     {
                         chunkQueue.Enqueue(chunk);
