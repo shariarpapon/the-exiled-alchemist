@@ -15,6 +15,8 @@ namespace Everime.WorldManagement
         private ComputeShader visibilityComputer;
         [SerializeField]
         private ChunkUpdateMethod updateMethod;
+        [SerializeField]
+        private bool updateVisibility = true;
       
         [SerializeField, Tooltip("This will auto round to the nearest multiple of 16 that is greater than or equal to 16 due to the thread compatibility")]
         private int visibleChunksPerAxis;
@@ -34,7 +36,7 @@ namespace Everime.WorldManagement
         public void Init(World world) 
         {
             this.world = world;
-            this.chunks = world.Chunks;
+            this.chunks = world.chunks;
 
             ValidateChunksPerAxisWithThreadCount();
 
@@ -75,7 +77,7 @@ namespace Everime.WorldManagement
         /// </summary>
         public void UpdateChunkVisibility()
         {
-            if (world == null || !world.Settings.updateChunkVisibility) return;
+            if (world == null || !updateVisibility) return;
 
             int kernelIndex = visibilityComputer.FindKernel("Kernel_16x16x1");
             ComputeBuffer computeDataBuffer = new ComputeBuffer(maxVisibleChunks, BUFFER_BYTESIZE);
@@ -105,8 +107,8 @@ namespace Everime.WorldManagement
             {
                 if (chunks.ContainsKey(data.coord))
                 {
-                    if (data.setActive == 1) world.Chunks[data.coord].SetVisible(true);
-                    else world.Chunks[data.coord].SetVisible(false);
+                    if (data.setActive == 1) world.chunks[data.coord].SetVisible(true);
+                    else world.chunks[data.coord].SetVisible(false);
                 }
             }
         }

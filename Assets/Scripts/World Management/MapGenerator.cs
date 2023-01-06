@@ -1,5 +1,4 @@
-using JetBrains.Annotations;
-using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
 using UnityEngine;
 
 namespace Everime.WorldManagement
@@ -62,18 +61,31 @@ namespace Everime.WorldManagement
         /// <summary>
         /// Normalizes the given height map between 0 and 1 using the given min/max height.
         /// </summary>
-        internal static float[,] NormalizeHeightMap(float[,] heightMap, float minHeight, float maxHeight)
+        internal static float[,] NormalizeHeightMap(float[,] heightMap, float minHeight, float maxHeight, float maxWorldSize, Vector3 worldMapPosition)
         {
             int size = heightMap.GetLength(0);
             float[,] normalizedMap = new float[size, size];
 
+            float mapExtent = (size - 1) / 2f;
+            float maxDistToCenter = maxWorldSize / 2f;
+            Vector2 center = new Vector2(maxDistToCenter, maxDistToCenter);
+
             for (int x = 0; x < size; x++)
                 for (int y = 0; y < size; y++)
                 {
-                    normalizedMap[x, y] = Mathf.InverseLerp(minHeight, maxHeight, heightMap[x, y]);
+                    float heightValue = Mathf.InverseLerp(minHeight, maxHeight, heightMap[x, y]);
+
+                    float worldX = (x - mapExtent) + worldMapPosition.x;
+                    float worldZ = (y - mapExtent) + worldMapPosition.z;
+
+                    Vector2 vertexPosition = new Vector2(worldX, worldZ);
+                    float falloff = 1 - maxDistToCenter / Vector2.Distance(vertexPosition, center);
+
+                    normalizedMap[x, y] = Mathf.Clamp01(heightValue * (1 - falloff));
                 }
             return normalizedMap;
         }
+
     }
 
 

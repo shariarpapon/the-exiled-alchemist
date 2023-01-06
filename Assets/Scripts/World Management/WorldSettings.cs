@@ -16,19 +16,18 @@ namespace Everime.WorldManagement
         public int Seed { get { return seed.GetHashCode(); } }
         [Tooltip("The number of chunks per axis (X, Z) of the world")]
         public int worldSizeInChunks;
-        public int WorldSize { get { return worldSizeInChunks * chunkSize; } }
+        public int worldUnitSize { get { return worldSizeInChunks * chunkSize; } }
 
         public AnimationCurve heightCurve;
         public float heightMultiplier;
         public Vector3 worldOffset;
         public HeightCalculationMethod heightCalculationMethod;
-        public WorldGenerationMode worldGenerationMode;
+        public Gradient vertexGradient;
         
         [Header("Chunk Settings")]
         public int chunkSize;
         public Material chunkMaterial;
         public NoiseSettings heightNoiseSettings;
-        public bool updateChunkVisibility = true;
 
         /// <summary>
         /// Returns a seed that is generated from appending the passed in seed with the gloabl seed.
@@ -48,19 +47,13 @@ namespace Everime.WorldManagement
     }
 
     [System.Serializable]
-    public enum WorldGenerationMode
-    {
-        MainThread,
-        SeperateThread
-    }
-
-    [System.Serializable]
     public enum HeightCalculationMethod
     {
+        Default = 0,
         Square,
         Cube,
         Curve,
         SquareCurve,
-        CubeCurve
+        CubeCurve,
     }
 }

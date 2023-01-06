@@ -3,46 +3,60 @@ using UnityEngine;
 namespace Everime.WorldManagement
 {
     /// <summary>
-    /// This class contains methods for chunk mesh generation.
+    /// This class contains methods for chunk mesh data generation.
     /// </summary>
     internal static class ChunkMeshDataGenerator
     {
-        internal static Vector3[] GenerateMeshVertices(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, HeightCalculationMethod method)
+        internal static MeshData GenerateMeshData(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, Gradient vertexGradient,  HeightCalculationMethod method)
         {
             int meshSize = heightMap.GetLength(0);
-            Vector3[] chunkVerts = new Vector3[meshSize * meshSize];
+
+            MeshData meshData = new MeshData(meshSize);
+
+            float meshExtent = (meshSize - 1) / 2f;
+            int vertexIndex = 0;
 
             for (int x = 0; x < meshSize; x++)
                 for (int y = 0; y < meshSize; y++)
                 {
-                    int index = x * meshSize + y;
-                    float height = 0;
-                    switch (method) 
+                    float vertexHeight = CalculateVertexHeight(heightMap[x, y], heightCurve, method);
+
+                    meshData.AddVertex(vertexIndex, new Vector3(x - meshExtent, vertexHeight * heightMultiplier, y - meshExtent));
+                    meshData.AddUV(vertexIndex, new Vector2(x / (float)meshSize, y / (float)meshSize));
+                    meshData.AddColor(vertexIndex, vertexGradient.Evaluate(vertexHeight));
+
+                    if (x < meshSize - 1 && y < meshSize - 1)
                     {
-                        case HeightCalculationMethod.Square:
-                            height = heightMap[x, y] * heightMap[x, y] * heightMultiplier;
-                            break;
-                        case HeightCalculationMethod.Cube:
-                            height = heightMap[x, y] * heightMap[x, y] * heightMap[x, y] * heightMultiplier;
-                            break;
-                        case HeightCalculationMethod.Curve:
-                            height = heightMap[x, y] * heightMultiplier * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y]));
-                            break;
-                        case HeightCalculationMethod.SquareCurve:
-                            height = heightMap[x, y] * heightMap[x, y] * heightMultiplier * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y]));
-                            break;
-                        case HeightCalculationMethod.CubeCurve:
-                            height = heightMap[x, y] * heightMap[x, y] * heightMap[x, y] * heightMultiplier * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y]));
-                            break;
+                        meshData.AddTriangle(vertexIndex, vertexIndex + 1, vertexIndex + meshSize);
+                        meshData.AddTriangle(vertexIndex + 1, vertexIndex + meshSize + 1, vertexIndex + meshSize);
                     }
-                    //float height = heightMap[x, y] * heightCurve.Evaluate(Mathf.Abs(heightMap[x, y])) * heightMultiplier;
-                    chunkVerts[index] = new Vector3(x, height, y);
+
+                    vertexIndex++;
                 }
-            //mesh.normals = CalculateNormals(mesh);
-            return chunkVerts;
+
+            return meshData;
         }
 
         #region Utils
+        private static float CalculateVertexHeight(float heightMapValue, AnimationCurve heightCurve, HeightCalculationMethod method) 
+        {
+            switch (method)
+            {
+                case HeightCalculationMethod.Square:
+                    return heightMapValue * heightMapValue;
+                case HeightCalculationMethod.Cube:
+                    return heightMapValue * heightMapValue * heightMapValue;
+                case HeightCalculationMethod.Curve:
+                    return heightCurve.Evaluate(heightMapValue);
+                case HeightCalculationMethod.SquareCurve:
+                    return heightMapValue * heightMapValue * heightCurve.Evaluate(heightMapValue);
+                case HeightCalculationMethod.CubeCurve:
+                    return heightMapValue * heightMapValue * heightMapValue * heightCurve.Evaluate(heightMapValue);
+                default:
+                    return heightMapValue;
+            }
+        }
+
         private static Vector3[] CalculateNormals(Mesh mesh) 
         {
             Vector3[] normals = new Vector3[mesh.vertices.Length];
@@ -78,29 +92,58 @@ namespace Everime.WorldManagement
             Vector3 sideAC = pointC - pointB;
             return Vector3.Cross(sideAB, sideAC).normalized;
         }
-
-        internal static int[] GenerateMeshTriangles(int chunkSize)
-        {
-            int[] tris = new int[chunkSize * chunkSize * 6];
-            int t = 0, v = 0;
-            for (int x = 0; x < chunkSize; x++)
-            {
-                for (int y = 0; y < chunkSize; y++)
-                {
-                    tris[t] = v + 1;
-                    tris[t + 1] = v + chunkSize + 1;
-                    tris[t + 2] = v + 0;
-                    tris[t + 3] = v + chunkSize + 2;
-                    tris[t + 4] = v + chunkSize + 1;
-                    tris[t + 5] = v + 1;
-                    t += 6;
-                    v++;
-                }
-                v++;
-            }
-            return tris;
-        }
         #endregion
+    }
 
+    public class MeshData 
+    {
+        public int[] triangles;
+        public Vector3[] vertices;
+        public Vector2[] uv;
+        public Color[] colors;
+
+        private int triangleIndex = 0;
+
+        public MeshData(int vertsPerAxis) 
+        {
+            triangles = new int[(vertsPerAxis - 1) * (vertsPerAxis - 1) * 6];
+            vertices = new Vector3[vertsPerAxis * vertsPerAxis];
+            uv = new Vector2[vertsPerAxis * vertsPerAxis];
+            colors = new Color[vertsPerAxis * vertsPerAxis];
+        }
+
+        public void AddTriangle(int a, int b, int c) 
+        {
+            triangles[triangleIndex] = a;
+            triangles[triangleIndex + 1] = b;
+            triangles[triangleIndex + 2] = c;
+            triangleIndex += 3;
+        }
+
+        public void AddVertex(int index, Vector3 position) 
+        {
+            vertices[index] = position;
+        }
+
+        public void AddUV(int index, Vector2 vertexUV) 
+        {
+            uv[index] = vertexUV;
+        }
+
+        public void AddColor(int index, Color color) 
+        {
+            colors[index] = color;
+        }
+
+        public Mesh CreateMeshFromData() 
+        {
+            Mesh mesh = new Mesh();
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.uv = uv;
+            mesh.colors = colors;
+            mesh.RecalculateNormals();
+            return mesh;
+        }
     }
 }

@@ -49,8 +49,8 @@ namespace Everime.WorldManagement.CustomEditors
 
             if (AutoUpdate) 
             {
-                int size = worldMaster.worldSettings.WorldSize;
-                if (size <= 100) worldMaster.CreateWorld();
+                int size = worldMaster.worldSettings.worldUnitSize;
+                if (size <= 100) worldMaster.GenerateWorld();
                 else 
                 {
                     DebugUtils.LogNegative("Cannot auto update if world size exceeds 100 units!");
@@ -60,7 +60,7 @@ namespace Everime.WorldManagement.CustomEditors
             else
             {
                 if (GUILayout.Button("Create World"))
-                    worldMaster.CreateWorld();
+                    worldMaster.GenerateWorld();
                 if (GUILayout.Button("Delete World"))
                     worldMaster.ClearExistingWorld();
             }

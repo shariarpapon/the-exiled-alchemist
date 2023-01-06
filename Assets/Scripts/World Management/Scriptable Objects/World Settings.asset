@@ -14,51 +14,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRandomSeed: 0
   seed: 27vu4cqp.rh1
-  worldSizeInChunks: 50
+  worldSizeInChunks: 300
   heightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.025157234
-      outSlope: 0.025157234
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.21767111
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.76555794
-      value: 0.2019527
-      inSlope: 0.64870864
-      outSlope: 0.64870864
+      time: 0.5178865
+      value: 0.11017929
+      inSlope: 0.7226418
+      outSlope: 0.7226418
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.37795582
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 7.7358556
-      outSlope: 7.7358556
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.09018185
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  heightMultiplier: 50
+  heightMultiplier: 5
   worldOffset: {x: 0, y: 0, z: 0}
-  heightCalculationMethod: 4
-  worldGenerationMode: 1
+  heightCalculationMethod: 3
+  vertexGradient:
+    serializedVersion: 2
+    key0: {r: 0.51872957, g: 0.7169812, b: 0.36187258, a: 1}
+    key1: {r: 0.4621261, g: 0.6226415, b: 0.32013172, a: 1}
+    key2: {r: 0.49675152, g: 0.5496592, b: 0.5754717, a: 0}
+    key3: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 14842
+    ctime1: 50886
+    ctime2: 61102
+    ctime3: 65535
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
   chunkSize: 16
-  chunkMaterial: {fileID: 2100000, guid: 717bf287d1cac5741b5fe30e8efcd91f, type: 2}
+  chunkMaterial: {fileID: 2100000, guid: 479865099a5d6ad4f99e7e16b96a7f6e, type: 2}
   heightNoiseSettings:
-    scale: 40
+    scale: 70
     amplitude: 1
     frequency: 1
-    octaves: 4
+    octaves: 5
     lacunarity: 2
-    persistence: 0.3
-  updateChunkVisibility: 1
+    persistence: 0.2
